@@ -8,6 +8,9 @@ import reactor.core.publisher.Sinks;
 
 import java.util.function.Supplier;
 
+/**
+ * This class is to publish the order details to "order-event" topic
+ */
 @Configuration
 public class OrderPublisherConfig {
 
