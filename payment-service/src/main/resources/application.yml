@@ -14,12 +14,14 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
 
   application:
-    name: ORDER-SERVICE
+    name: PAYMENT-SERVICE
 
   cloud:
     stream:
       function:
-        definition: orderSupplier
-      bindings:
-        orderSupplier-out-0: # here 0 is any number. we can specify any number of topics here as like this
-          destination: order-event  # This is the topic name
+        definition: paymentProcessor # This is a method name we wrote in PaymentConsumerConfig class
+      bindings: # here "in" represent consumer from the topic
+        paymentProcessor-in-0: # here 0 is any number. we can specify any number of topics here as like this
+          destination: order-event  # This is the topic name we are going to consume
+        paymentProcessor-out-0: # here 0 is any number. we can specify any number of topics here as like this
+          destination: payment-event  # This is the topic name we are going to publish

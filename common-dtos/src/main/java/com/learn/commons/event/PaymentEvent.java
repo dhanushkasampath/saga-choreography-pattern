@@ -1,11 +1,13 @@
 package com.learn.commons.event;
 
 import com.learn.commons.dto.PaymentRequestDto;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.UUID;
 
+@Data
 @NoArgsConstructor
 public class PaymentEvent implements Event{
 

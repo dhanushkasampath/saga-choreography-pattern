@@ -1,7 +1,9 @@
 package com.learn.payment.config;
 
 import com.learn.commons.event.OrderEvent;
+import com.learn.commons.event.OrderStatus;
 import com.learn.commons.event.PaymentEvent;
+import com.learn.payment.service.PaymentService;
 import org.reactivestreams.Publisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,12 @@ import java.util.function.Supplier;
  */
 @Configuration
 public class PaymentConsumerConfig {
+
+    private final PaymentService paymentService;
+
+    public PaymentConsumerConfig(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
     @Bean
     public Sinks.Many<OrderEvent> orderSinks(){
@@ -39,6 +47,10 @@ public class PaymentConsumerConfig {
         // check the balance availability
         // if balance sufficient -> payment completed and deduct amount from db
         // if balance not sufficient -> cancel order event and update the amount in DB
-        return null;
+        if (OrderStatus.ORDER_CREATED.equals(orderEvent.getOrderStatus())) {
+            return Mono.fromSupplier(() -> this.paymentService.newOrderEvent(orderEvent));
+        } else {
+            return Mono.fromRunnable(() -> this.paymentService.cancelOrderEvent(orderEvent));
+        }
     }
 }

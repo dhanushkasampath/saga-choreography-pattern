@@ -18,5 +18,5 @@ public class UserTransaction {
     @Id
     private Integer orderId;
     private Integer userId;
-    private Integer price;
+    private Integer amount;
 }
